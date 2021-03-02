@@ -104,12 +104,3 @@ install(FILES
 		"${CMAKE_CURRENT_BINARY_DIR}/platform_foldersConfigVersion.cmake"
 	DESTINATION "${_PROJECT_INSTALL_CMAKE_DIR}"
 )
-
-# A module for testing the library
-include(CTest)
-# BUILD_TESTING is defined (default ON) in CTest
-if(BUILD_TESTING)
-	add_subdirectory(test)
-	add_executable(platform_folders_sample platform_folders.cpp)
-	target_link_libraries(platform_folders_sample PRIVATE platform_folders)
-endif()
