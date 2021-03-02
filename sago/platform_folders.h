@@ -35,7 +35,7 @@ SOFTWARE.
 /**
  * The namespace I use for common function. Nothing special about it.
  */
-namespace sago {
+namespace cxxfolders {
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 namespace internal {
