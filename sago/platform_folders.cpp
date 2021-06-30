@@ -161,17 +161,21 @@ static void throwOnRelative(const char* envName, const char* envValue) {
 	}
 }
 
-
+static std::string getLinuxHome(const char* envName)
+{
+    std::string res;
+    const char* tempRes = std::getenv(envName);
+    if (tempRes) {
+        throwOnRelative(envName, tempRes);
+        res = tempRes;
+        return res;
+    }
+    res = getHome();
+    return res;
+}
 
 static std::string getLinuxFolderDefault(const char* envName, const char* defaultRelativePath) {
-	std::string res;
-	const char* tempRes = std::getenv(envName);
-	if (tempRes) {
-		throwOnRelative(envName, tempRes);
-		res = tempRes;
-		return res;
-	}
-	res = getHome() + "/" + defaultRelativePath;
+	res = getLinuxHome(envName) + "/" + defaultRelativePath;
 	return res;
 }
 
@@ -206,6 +210,16 @@ void appendExtraFoldersTokenizer(const char* envName, const char* envValue, std:
 }
 }
 #endif
+
+std::string getUserAppData() {
+#ifdef _WIN32
+    return GetAppData();
+#elif defined(__APPLE__)
+    return getHome()+"/Library/Application Support";
+#else
+    return getLinuxHome("XDG_DATA_HOME");
+#endif
+}
 
 std::string getDataHome() {
 #ifdef _WIN32
@@ -315,6 +329,16 @@ PlatformFolders::PlatformFolders() {
 PlatformFolders::~PlatformFolders() {
 #if !defined(_WIN32) && !defined(__APPLE__)
 	delete this->data;
+#endif
+}
+
+std::string PlatformFolders::getUserAppData() const {
+#ifdef _WIN32
+    return GetAppData();
+#elif defined(__APPLE__)
+    return getHome()+"/Library/Application Support";
+#else
+    return getLinuxHome("XDG_DATA_HOME");
 #endif
 }
 
