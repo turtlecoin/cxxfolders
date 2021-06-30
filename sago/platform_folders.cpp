@@ -175,6 +175,7 @@ static std::string getLinuxHome(const char* envName)
 }
 
 static std::string getLinuxFolderDefault(const char* envName, const char* defaultRelativePath) {
+    std::string res;
 	res = getLinuxHome(envName) + "/" + defaultRelativePath;
 	return res;
 }
